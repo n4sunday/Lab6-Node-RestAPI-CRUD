@@ -3,41 +3,47 @@ const app = express()
 const router = express.Router()
 const bodyParser = require('body-parser')
 
-let bears = [{id:1,name:'Winnie', weight:50}, 
-             {id:2,name:'Pool', weight:70}, ]
+let std = [{id:5935512004,name:'Nattapon',surname:'Lueakaew',Major:'CoE',GPA: 2.65}, 
+{id:5935512023,name:'Niran',surname:'Sasuloh',Major:'CoE',GPA: 4.00}, ]
 
 app.use('/api',bodyParser.json(),router)       
 app.use('/api',bodyParser.urlencoded({extended:false}),router)              
 
 app.use('/api',router)
 
-router.route('/bears')
+router.route('/student')
     .get((req,res) =>
-        res.send(bears)
+        res.send(std)
     )
     .post((req,res) => {
-        let bear = {}
-        bear.id = bears.length+1
-        bear.name = req.body.name
-        bear.weight = req.body.weight
-        bears.push( bear)
-        res.send( bear )
+        let student = {}
+        student.id = req.body.id
+        student.name = req.body.name
+        student.surname = req.body.surname
+        student.Major = req.body.Major
+        student.GPA = req.body.GPA
+        std.push( student)
+        res.send( std )
         }
     )
 
-router.route('/bears/:id')
+router.route('/student/:id')
         .get((req,res) =>{
-            res.send(bears[ req.params.id-1])
+            res.send(std[ req.params.id-1])
         })
         .put((req,res) => {
             var id = req.params.id-1
-            bears[id].name = req.body.name
-            bears[id].weight = req.body.weight
-            res.send(breas[id])
+            std[id].name = req.body.name
+            std[id].surname = req.body.surname
+            std[id].Major = req.body.Major
+            std[id].GPA = req.body.GPA
+
+            res.send(std[id])
         })
         .delete((req,res) => {
-            delete bears[req.params.id-1]
-            res.send({ message: 'Bear deleted: ' + req.params.bear_id});
+            std = std.filter((item) => item.id != req.params.id)
+            console.log(std);
+            res.send(std)
         })
 
 
